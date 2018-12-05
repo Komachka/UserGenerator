@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">UserGenerator</string>
+    <string name="USER_ITEM">USER_ITEM</string>
 </resources>

@@ -11,7 +11,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Call;
@@ -23,14 +22,15 @@ import okhttp3.Response;
 public class RandomFetcher {
     private static final String LOG_TAG = RandomFetcher.class.getSimpleName();
     private static final String API_URL = "https://randomuser.me/api/";
-    private List<UserItem> userItems = new ArrayList<>();
+    private List<UserItem> userItems;
     private OkHttpClient okHttpClient;
     private FetchDataCallbackInterface callbackInterface;
 
 
-    public RandomFetcher(FetchDataCallbackInterface callbackInterface) {
+    public RandomFetcher(FetchDataCallbackInterface callbackInterface, List<UserItem> userItems) {
         this.okHttpClient = new OkHttpClient();
         this.callbackInterface = callbackInterface;
+        this.userItems = userItems;
     }
 
     Call post(String url, Callback callback)
@@ -86,8 +86,9 @@ public class RandomFetcher {
             userItem.setPhoneNumber(results.getJSONObject(i).get("phone").toString());
 
             JSONObject picture = results.getJSONObject(i).getJSONObject("picture");
-            userItem.setUrl(picture.get("thumbnail").toString());
-            //Log.i(LOG_TAG, userItem.toString());
+            userItem.setUrlThumbnail(picture.get("thumbnail").toString());
+            userItem.setUrlLarge(picture.get("large").toString());
+
             userItems.add(userItem);
             Log.i(LOG_TAG, "userItems after added " + userItems.size());
         }

@@ -1,15 +1,24 @@
 package com.example.katerynastorozh.usergenerator.util;
 
-public class UserItem {
+import java.io.Serializable;
+
+public class UserItem implements Serializable {
     private String firstName; //
     private String lastName; //
     private String gender; //
     private String dateOfBirth; //
     private String age; //
     private String phoneNumber; //
-    private String caption;
-    private String id;
-    private String url;
+    private String urlThumbnail;
+    private String urlLarge;
+
+    public String getUrlLarge() {
+        return urlLarge;
+    }
+
+    public void setUrlLarge(String urlLarge) {
+        this.urlLarge = urlLarge;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -50,29 +59,14 @@ public class UserItem {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+    
 
-    public String getCaption() {
-        return caption;
+    public String getUrlThumbnail() {
+        return urlThumbnail;
     }
 
-    public void setCaption(String caption) {
-        this.caption = caption;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
+    public void setUrlThumbnail(String urlThumbnail) {
+        this.urlThumbnail = urlThumbnail;
     }
 
     public String getAge() {
@@ -93,9 +87,8 @@ public class UserItem {
                 ", dateOfBirth='" + dateOfBirth + '\'' +
                 ", age='" + age + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
-                ", caption='" + caption + '\'' +
-                ", id='" + id + '\'' +
-                ", url='" + url + '\'' +
+                ", urlThumbnail='" + urlThumbnail + '\'' +
+                ", urlLarge='" + urlLarge + '\'' +
                 '}';
     }
 }

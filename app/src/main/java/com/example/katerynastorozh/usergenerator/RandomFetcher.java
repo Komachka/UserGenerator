@@ -60,7 +60,6 @@ public class RandomFetcher {
                     try {
                         JSONObject jsonObjectBody = new JSONObject(jsonString);
                         parseJSON(jsonObjectBody);
-                        Log.i(LOG_TAG, "onResponse " + userItems.size());
                         callbackInterface.fetchDataCallback(userItems);
                     } catch (JSONException e) {
                         Log.e(LOG_TAG, e.getMessage());
@@ -84,20 +83,20 @@ public class RandomFetcher {
             setBirthday(userItem, registered);
 
             userItem.setPhoneNumber(results.getJSONObject(i).get("phone").toString());
-
+            userItem.setEmail(results.getJSONObject(i).get("email").toString());
             JSONObject picture = results.getJSONObject(i).getJSONObject("picture");
             userItem.setUrlThumbnail(picture.get("thumbnail").toString());
             userItem.setUrlLarge(picture.get("large").toString());
 
             userItems.add(userItem);
-            Log.i(LOG_TAG, "userItems after added " + userItems.size());
+            //Log.d(LOG_TAG, "userItems after added " + userItems.size());
         }
-        Log.i(LOG_TAG, "userItems after loop " + userItems.size());
+        //Log.d(LOG_TAG, "userItems after loop " + userItems.size());
     }
 
     private void setBirthday(UserItem userItem, JSONObject registered) throws JSONException {
         userItem.setDateOfBirth(registered.get("date").toString());
-        userItem.setAge(registered.get("age").toString());
+
     }
 
     private void setName(UserItem item, JSONObject name)throws JSONException {

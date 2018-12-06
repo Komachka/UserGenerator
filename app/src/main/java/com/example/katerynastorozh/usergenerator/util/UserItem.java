@@ -1,13 +1,17 @@
 package com.example.katerynastorozh.usergenerator.util;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class UserItem implements Serializable {
     private String firstName; //
     private String lastName; //
     private String gender; //
     private String dateOfBirth; //
-    private String age; //
+    private String email; //
     private String phoneNumber; //
     private String urlThumbnail;
     private String urlLarge;
@@ -28,8 +32,13 @@ public class UserItem implements Serializable {
         this.firstName = firstName;
     }
 
+
     public String getLastName() {
         return lastName;
+    }
+
+    public String getFirstLastName() {
+        return firstName + " " + lastName;
     }
 
     public void setLastName(String lastName) {
@@ -45,7 +54,16 @@ public class UserItem implements Serializable {
     }
 
     public String getDateOfBirth() {
-        return dateOfBirth;
+        DateFormat formatter = new SimpleDateFormat("YYYY-mm-dd");
+
+        Date date = null;
+        try {
+            date = formatter.parse(dateOfBirth);
+        } catch (ParseException e) {
+            date = new Date();
+        }
+        String formatedDate = formatter.format(date);
+        return formatedDate;
     }
 
     public void setDateOfBirth(String dateOfBirth) {
@@ -69,13 +87,15 @@ public class UserItem implements Serializable {
         this.urlThumbnail = urlThumbnail;
     }
 
-    public String getAge() {
-        return age;
+    public String getEmail() {
+        return email;
     }
 
-    public void setAge(String age) {
-        this.age = age;
+    public void setEmail(String email) {
+        this.email = email;
     }
+
+
 
 
     @Override
@@ -85,7 +105,7 @@ public class UserItem implements Serializable {
                 ", lastName='" + lastName + '\'' +
                 ", gender='" + gender + '\'' +
                 ", dateOfBirth='" + dateOfBirth + '\'' +
-                ", age='" + age + '\'' +
+                ", email='" + email + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", urlThumbnail='" + urlThumbnail + '\'' +
                 ", urlLarge='" + urlLarge + '\'' +

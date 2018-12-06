@@ -1,4 +1,4 @@
-package com.example.katerynastorozh.usergenerator;
+package com.example.katerynastorozh.usergenerator.activityes;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -6,8 +6,12 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
+import com.example.katerynastorozh.usergenerator.FetchDataCallbackInterface;
+import com.example.katerynastorozh.usergenerator.R;
+import com.example.katerynastorozh.usergenerator.RandomFetcher;
 import com.example.katerynastorozh.usergenerator.util.UserItem;
 
 import java.util.ArrayList;
@@ -21,6 +25,7 @@ public class AllUsersActivity extends AppCompatActivity implements FetchDataCall
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
+    private View emptyView;
 
 
     @Override
@@ -30,13 +35,7 @@ public class AllUsersActivity extends AppCompatActivity implements FetchDataCall
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-
-        UserItem item = new UserItem();
-        item.setUrlThumbnail("https://randomuser.me/api/portraits/thumb/women/4.jpg");
-        item.setFirstName("Vasya");
-        item.setLastName("Pupkin");
-        userItems.add(item);
-
+        emptyView = findViewById(R.id.empty_view);
         adapter = new MyAdapter(userItems, this, new MyAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(UserItem userItem) {
@@ -46,10 +45,11 @@ public class AllUsersActivity extends AppCompatActivity implements FetchDataCall
                 Intent intent = new Intent(AllUsersActivity.this, ProfileActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
+
+                //overridePendingTransition(R.anim.fadein, R.anim.fadeout);
             }
         });
         recyclerView.setAdapter(adapter);
-
 
         RandomFetcher fetcher = new RandomFetcher(this, userItems);
         fetcher.fetchUsers();
@@ -68,14 +68,6 @@ public class AllUsersActivity extends AppCompatActivity implements FetchDataCall
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(AllUsersActivity.this, "userItems.size()" + " In tun method = " + userItems.size(), Toast.LENGTH_LONG).show();
-                UserItem item = new UserItem();
-                item.setUrlThumbnail("https://randomuser.me/api/portraits/thumb/women/4.jpg");
-                item.setFirstName("Vasya");
-                item.setLastName("Pupkin2");
-                userItems.add(item);
-
-
                 AllUsersActivity.this.adapter.notifyDataSetChanged();
                 setEmptyView();
             }
@@ -86,14 +78,14 @@ public class AllUsersActivity extends AppCompatActivity implements FetchDataCall
 
 
     private void setEmptyView() {
-        /*if (userItems.isEmpty()) {
+        if (userItems.isEmpty()) {
             recyclerView.setVisibility(View.GONE);
             emptyView.setVisibility(View.VISIBLE);
         }
         else {
             recyclerView.setVisibility(View.VISIBLE);
             emptyView.setVisibility(View.GONE);
-        }*/
+        }
     }
 
 

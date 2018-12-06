@@ -36,12 +36,13 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         public View view;
         public ImageView icon;
         public TextView firstLastName;
+        public ImageView gender;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             view = itemView;
             icon = itemView.findViewById(R.id.icon);
             firstLastName = itemView.findViewById(R.id.text1);
-
+            gender = itemView.findViewById(R.id.gender_icon);
         }
 
 
@@ -60,6 +61,14 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     public void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, final int position) {
         helper.loadImageToView(userItems.get(position).getUrlThumbnail(), myViewHolder.icon);
         myViewHolder.firstLastName.setText(userItems.get(position).getFirstName() + " " + userItems.get(position).getLastName());
+        if (userItems.get(position).getGender().equals("male"))
+        {
+            myViewHolder.gender.setBackground(myViewHolder.gender.getContext().getResources().getDrawable(R.drawable.round_borders));
+        }
+        else
+        {
+            myViewHolder.gender.setBackground(myViewHolder.gender.getContext().getResources().getDrawable(R.drawable.round_borders_f));
+        }
         myViewHolder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

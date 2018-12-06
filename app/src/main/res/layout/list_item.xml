@@ -6,7 +6,8 @@
 
     <ImageView android:id="@+id/icon"
         android:layout_width="50dp"
-        android:layout_height="50dp"/>
+        android:layout_height="50dp"
+        />
 
     <TextView
         android:id="@+id/text1"
@@ -18,5 +19,10 @@
 
     <ImageView
         android:layout_width="10dp"
-        android:layout_height="10dp" />
+        android:layout_height="10dp"
+        android:layout_gravity="end|center_horizontal"
+        android:foregroundGravity="right|center_horizontal"
+        android:background="@drawable/round_borders"
+        android:id="@+id/gender_icon"
+        />
 </LinearLayout>

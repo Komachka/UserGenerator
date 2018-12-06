@@ -41,7 +41,6 @@ public class AllUsersActivity extends AppCompatActivity implements FetchDataCall
         adapter = new MyAdapter(userItems, this, new MyAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(UserItem userItem) {
-                Toast.makeText(AllUsersActivity.this, userItem.getFirstName(), Toast.LENGTH_LONG).show();
                 Bundle bundle = new Bundle();
                 bundle.putSerializable(getResources().getString(R.string.USER_ITEM), userItem);
                 Intent intent = new Intent(AllUsersActivity.this, ProfileActivity.class);
@@ -77,18 +76,22 @@ public class AllUsersActivity extends AppCompatActivity implements FetchDataCall
     @Override
     public void fetchDataCallback(final List<UserItem> userItems) {
         AllUsersActivity.this.userItems = userItems;
-        for (UserItem item: userItems) {
-            Log.d(LOG_TAG, item.toString());
-            }
+        Log.i(LOG_TAG, "userItems.size() " + userItems.size());
+
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                AllUsersActivity.this.adapter.notifyDataSetChanged();
-                setEmptyView();
+                synchronized (this)
+                {
+                    Toast.makeText(AllUsersActivity.this, "userItems.size() " + userItems.size(), Toast.LENGTH_SHORT).show();
+                    AllUsersActivity.this.adapter.notifyDataSetChanged();
+                    setEmptyView();
+                    this.notify();
+                }
+
             }
         });
-
-
+        
     }
 
 

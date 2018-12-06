@@ -15,4 +15,8 @@
         android:layout_gravity="center_horizontal"
         android:textSize="24sp"
         android:paddingStart="?android:attr/listPreferredItemPaddingStart" />
+
+    <ImageView
+        android:layout_width="10dp"
+        android:layout_height="10dp" />
 </LinearLayout>

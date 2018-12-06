@@ -1,9 +1,9 @@
-package com.example.katerynastorozh.usergenerator;
+package com.example.katerynastorozh.usergenerator.api;
 
 import android.net.Uri;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
+import com.example.katerynastorozh.usergenerator.activityes.FetchDataCallbackInterface;
 import com.example.katerynastorozh.usergenerator.util.UserItem;
 
 import org.json.JSONArray;

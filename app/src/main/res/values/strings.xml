@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">UserGenerator</string>
     <string name="USER_ITEM">USER_ITEM</string>
+    <string name="aplication_has_permission">Application is already has permissions</string>
+    <string name="permission_grant">\@@@ PERMISSIONS grant</string>
+    <string name="permission_denied">\@@@ PERMISSIONS Denied</string>
+    <string name="profile_title">Profile</string>
 </resources>

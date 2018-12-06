@@ -1,4 +1,4 @@
-package com.example.katerynastorozh.usergenerator;
+package com.example.katerynastorozh.usergenerator.activityes;
 
 import com.example.katerynastorozh.usergenerator.util.UserItem;
 

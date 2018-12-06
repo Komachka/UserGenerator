@@ -10,9 +10,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.katerynastorozh.usergenerator.FetchDataCallbackInterface;
 import com.example.katerynastorozh.usergenerator.R;
-import com.example.katerynastorozh.usergenerator.RandomFetcher;
+import com.example.katerynastorozh.usergenerator.api.RandomFetcher;
 import com.example.katerynastorozh.usergenerator.util.UserItem;
 
 import java.util.ArrayList;

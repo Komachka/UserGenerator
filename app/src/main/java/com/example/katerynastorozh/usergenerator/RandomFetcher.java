@@ -1,6 +1,7 @@
 package com.example.katerynastorozh.usergenerator;
 
 import android.net.Uri;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import com.example.katerynastorozh.usergenerator.util.UserItem;
@@ -33,39 +34,54 @@ public class RandomFetcher {
         this.userItems = userItems;
     }
 
-    Call post(String url, Callback callback)
-    {
+    Call get(String url, Callback callback) {
         Request request = new Request.Builder()
                 .url(url)
                 .build();
-        Call call  = okHttpClient.newCall(request);
+        Call call = okHttpClient.newCall(request);
         call.enqueue(callback);
         return call;
     }
 
 
+    private Callback getPageCallback = new Callback() {
+        @Override
+        public void onFailure(Call call, IOException e) {
+
+        }
+
+        @Override
+        public void onResponse(Call call, Response response) throws IOException {
+            String jsonString = response.body().string();
+            try {
+                JSONObject jsonObjectBody = new JSONObject(jsonString);
+                parseJSON(jsonObjectBody);
+                callbackInterface.fetchDataCallback(userItems);
+            } catch (JSONException e) {
+                Log.e(LOG_TAG, e.getMessage());
+            }
+
+        }
+    };
+
+
     public void fetchUsers() {
 
+        String url = Uri.parse(API_URL).buildUpon().appendQueryParameter("results", "20").build().toString();
+        Call callFirstPage = get(url, getPageCallback);
 
-        String url = Uri.parse(API_URL).buildUpon().appendQueryParameter("results", "100").build().toString();
-        post(url, new Callback() {
-                @Override
-                public void onFailure(Call call, IOException e) {
-                    Log.e(LOG_TAG, e.getMessage());
-                }
 
-                @Override
-                public void onResponse(Call call, Response response) throws IOException {
-                    String jsonString = response.body().string();
-                    try {
-                        JSONObject jsonObjectBody = new JSONObject(jsonString);
-                        parseJSON(jsonObjectBody);
-                        callbackInterface.fetchDataCallback(userItems);
-                    } catch (JSONException e) {
-                        Log.e(LOG_TAG, e.getMessage());
-                    }
-                }
-            });
+
+    }
+
+    public void loadMore(int currentPage)
+    {
+        String url = Uri.parse(API_URL).buildUpon()
+                .appendQueryParameter("page", String.valueOf(currentPage))
+                .appendQueryParameter("results", "20")
+                .appendQueryParameter("seed", "abc")
+                .build().toString();
+        Call callNextPage = get(url, getPageCallback);
 
     }
 

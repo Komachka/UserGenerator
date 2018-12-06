@@ -1,6 +1,7 @@
 package com.example.katerynastorozh.usergenerator.activityes;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,8 +25,10 @@ public class AllUsersActivity extends AppCompatActivity implements FetchDataCall
     private List<UserItem> userItems = new ArrayList<>();
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
-    private RecyclerView.LayoutManager layoutManager;
+    private LinearLayoutManager layoutManager;
     private View emptyView;
+    private static final int PAGE_SIZE = 20;
+    private static int currentPage = 1;
 
 
     @Override
@@ -45,23 +48,36 @@ public class AllUsersActivity extends AppCompatActivity implements FetchDataCall
                 Intent intent = new Intent(AllUsersActivity.this, ProfileActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
-
-                //overridePendingTransition(R.anim.fadein, R.anim.fadeout);
             }
         });
         recyclerView.setAdapter(adapter);
-
-        RandomFetcher fetcher = new RandomFetcher(this, userItems);
+        final RandomFetcher fetcher = new RandomFetcher(AllUsersActivity.this, userItems);
         fetcher.fetchUsers();
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
 
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int visibleItemCount = layoutManager.getChildCount();
+                int totalItemCount = layoutManager.getItemCount();
+                int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
+                if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
+                        && firstVisibleItemPosition >= 0
+                        && totalItemCount >= PAGE_SIZE) {
+                    fetcher.loadMore(++currentPage);
+                }
+            }
+        });
+    }
 
-
-
-        }
 
     @Override
     public void fetchDataCallback(final List<UserItem> userItems) {
-        this.userItems = userItems;
+        AllUsersActivity.this.userItems = userItems;
         for (UserItem item: userItems) {
             Log.d(LOG_TAG, item.toString());
             }

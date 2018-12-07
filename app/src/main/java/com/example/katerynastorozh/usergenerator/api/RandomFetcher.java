@@ -47,7 +47,7 @@ public class RandomFetcher {
     private Callback getPageCallback = new Callback() {
         @Override
         public void onFailure(Call call, IOException e) {
-
+            Log.e(LOG_TAG, e.getMessage());
         }
 
         @Override

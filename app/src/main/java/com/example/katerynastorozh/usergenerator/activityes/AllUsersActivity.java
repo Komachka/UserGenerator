@@ -83,7 +83,6 @@ public class AllUsersActivity extends AppCompatActivity implements FetchDataCall
             public void run() {
                 synchronized (this)
                 {
-                    Toast.makeText(AllUsersActivity.this, "userItems.size() " + userItems.size(), Toast.LENGTH_SHORT).show();
                     AllUsersActivity.this.adapter.notifyDataSetChanged();
                     setEmptyView();
                     this.notify();

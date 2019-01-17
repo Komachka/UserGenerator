@@ -51,6 +51,9 @@ public class AllUsersActivity extends AppCompatActivity implements FetchDataCall
         recyclerView.setAdapter(adapter);
         final RandomFetcher fetcher = new RandomFetcher(AllUsersActivity.this, userItems);
         fetcher.fetchUsers();
+
+
+
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {

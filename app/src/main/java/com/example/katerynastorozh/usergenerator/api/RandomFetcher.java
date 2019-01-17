@@ -2,8 +2,10 @@ package com.example.katerynastorozh.usergenerator.api;
 
 import android.net.Uri;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.katerynastorozh.usergenerator.activityes.FetchDataCallbackInterface;
+import com.example.katerynastorozh.usergenerator.util.Result;
 import com.example.katerynastorozh.usergenerator.util.UserItem;
 
 import org.json.JSONArray;
@@ -14,11 +16,13 @@ import java.io.IOException;
 
 import java.util.List;
 
-import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import retrofit2.Call;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RandomFetcher {
     private static final String LOG_TAG = RandomFetcher.class.getSimpleName();
@@ -34,6 +38,7 @@ public class RandomFetcher {
         this.userItems = userItems;
     }
 
+/*
     Call get(String url, Callback callback) {
         Request request = new Request.Builder()
                 .url(url)
@@ -52,23 +57,53 @@ public class RandomFetcher {
 
         @Override
         public void onResponse(Call call, Response response) throws IOException {
-            String jsonString = response.body().string();
+            */
+/*String jsonString = response.body().string();
             try {
                 JSONObject jsonObjectBody = new JSONObject(jsonString);
                 parseJSON(jsonObjectBody);
                 callbackInterface.fetchDataCallback(userItems);
             } catch (JSONException e) {
                 Log.e(LOG_TAG, e.getMessage());
-            }
+            }*//*
+
 
         }
     };
+*/
 
 
     public void fetchUsers() {
 
-        String url = Uri.parse(API_URL).buildUpon().appendQueryParameter("results", "20").build().toString();
-        Call callFirstPage = get(url, getPageCallback);
+        Retrofit retrofit = new Retrofit.Builder()
+                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(API_URL)
+                .build();
+        UserServise servise = retrofit.create(UserServise.class);
+        final Call<Result> resultCall = servise.getListUsers();
+
+        resultCall.enqueue(new retrofit2.Callback<Result>() {
+            @Override
+            public void onResponse(Call<Result> call, retrofit2.Response<Result> response) {
+                System.out.println("here");
+                Result responceResult =  response.body();
+                userItems = responceResult.getUsers();
+                System.out.println(userItems.size());
+
+            }
+
+            @Override
+            public void onFailure(Call<Result> call, Throwable t) {
+
+            }
+        });
+
+
+
+
+
+       /* String url = Uri.parse(API_URL).buildUpon().appendQueryParameter("results", "20").build().toString();
+        Call callFirstPage = get(url, getPageCallback);*/
 
 
 
@@ -81,11 +116,11 @@ public class RandomFetcher {
                 .appendQueryParameter("results", "20")
                 .appendQueryParameter("seed", "abc")
                 .build().toString();
-        Call callNextPage = get(url, getPageCallback);
+        //Call callNextPage = get(url, getPageCallback);
 
     }
 
-    private void parseJSON(JSONObject jsonObjectBody) throws JSONException
+/*    private void parseJSON(JSONObject jsonObjectBody) throws JSONException
     {
         JSONArray results = jsonObjectBody.getJSONArray("results");
         for (int i = 0; i <results.length() ; i++) {
@@ -118,6 +153,6 @@ public class RandomFetcher {
     private void setName(UserItem item, JSONObject name)throws JSONException {
         item.setFirstName(name.get("first").toString());
         item.setLastName(name.get("last").toString());
-    }
+    }*/
 
 }
